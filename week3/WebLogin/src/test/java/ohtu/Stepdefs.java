@@ -25,9 +25,19 @@ public class Stepdefs {
 
     @Given("command new user is selected")
     public void commandNewUserIsSelected() {
-        driver.get(baseUrl);
-        WebElement element = driver.findElement(By.linkText("register new user"));
-        element.click();
+        navigateToRegistration();
+    }
+
+    @Given("user with username {string} with password {string} is successfully created")
+    public void userWithUsernameAndPasswordIsSuccessfullyCreated(String username, String password) {
+        navigateToRegistration();
+        registerWith(username, password, true);
+    }
+
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void userWithUsernameAndPasswordIsTriedToBeCreated(String username, String password) {
+        navigateToRegistration();
+        registerWith(username, password, true);
     }
     
     @When("correct username {string} and password {string} are given")
@@ -38,7 +48,7 @@ public class Stepdefs {
     @Then("user is logged in")
     public void userIsLoggedIn() {
         pageHasContent("Ohtu Application main page");
-    }    
+    }
  
     @When("correct username {string} and incorrect password {string} are given")
     public void correctUsernameAndIncorrectPasswordAreGiven(String username, String password) {
@@ -53,37 +63,37 @@ public class Stepdefs {
 
     @When("nonexistent username {string} and password {string} are given")
     public void nonexistentUsernameAndPasswordAreGiven(String username, String password) {
-      logInWith(username, password);
+        logInWith(username, password);
     }
 
     @When("a valid username {string} and valid password {string} and matching password confirmation are entered")
     public void anValidUsernameAndValidPasswordAndMatchingPasswordConfirmationAreEntered(String username, String password) {
-      registerWith(username, password, true);
+        registerWith(username, password, true);
     }
 
     @When("an invalid username {string} and valid password {string} and matching password confirmation are entered")
     public void anInvalidUsernameAndValidPasswordAndMatchingPasswordConfirmationAreEntered(String username, String password) {
-      registerWith(username, password, true);
+        registerWith(username, password, true);
     }
 
     @When("a valid username {string} and invalid password {string} and matching password confirmation are entered")
     public void aValidUsernameAndInvalidPasswordAndMatchingPasswordConfirmationAreEntered(String username, String password) {
-      registerWith(username, password, true);
+        registerWith(username, password, true);
     }
 
     @When("a valid username {string} and valid password {string} and non-matching password confirmation are entered")
     public void aValidUsernameAndValidPasswordAndNonMatchingPasswordConfirmationAreEntered(String username, String password) {
-      registerWith(username, password, false);
+        registerWith(username, password, false);
     }
 
     @Then("user is not created and error {string} is reported")
     public void userIsNotCreatedAndErrorIsReported(String error) {
-      pageHasContent(error);
+        pageHasContent(error);
     }
 
     @Then("a new user is created")
     public void aNewUserIsCreated() {
-      pageHasContent("Welcome to Ohtu Application!");
+        pageHasContent("Welcome to Ohtu Application!");
     }
     
     @After
@@ -92,6 +102,12 @@ public class Stepdefs {
     }
         
     /* helper methods */
+
+    private void navigateToRegistration() {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));
+        element.click();
+    }
  
     private void pageHasContent(String content) {
         assertTrue(driver.getPageSource().contains(content));
