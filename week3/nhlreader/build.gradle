@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'ohtu.Main'
+/* joudumme tässä tehtävässä käyttämään vanhaa tapaa mainClassin määrittelyyn sillä 
+tehtävässä käytettävä shadowJar-plugin ei osaa uudempaa syntaksia
+application {
+    mainClass = 'ohtu.Main'
+}
+
+*/
+
+dependencies {
+  compile 'org.apache.httpcomponents:httpclient:4.5.13'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ohtu.Main'
+    }
+}
