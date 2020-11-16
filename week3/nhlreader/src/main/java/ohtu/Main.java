@@ -5,8 +5,10 @@
  */
 package ohtu;
 
-import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.Arrays;
+
+import com.google.gson.Gson;
 import org.apache.http.client.fluent.Request;
 
 /**
@@ -25,10 +27,25 @@ public class Main {
 
     Gson mapper = new Gson();
     Player[] players = mapper.fromJson(bodyText, Player[].class);
+
+    int nameColumnSize = Arrays.stream(players)
+      .map(player -> player.getName().length())
+      .max(Integer::compare)
+      .orElse(0);
     
     System.out.println("Oliot:");
     for (Player player : players) {
-      System.out.println(player);
+      String nameColumnPadding = " ".repeat(nameColumnSize - player.getName().length());
+
+      System.out.println(String.format(
+        "%s%s  %3s  %3d + %3d = %d",
+        player.getName(),
+        nameColumnPadding,
+        player.getTeam(), 
+        player.getGoals(), 
+        player.getPenalties(), 
+        player.getAssists()
+      ));
     }
   }
 }
